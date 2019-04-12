@@ -5,7 +5,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        int [][] blocks = {{6,2,0}};
+        int [][] blocks = {{4,4,1}};
         Maze maze = new Maze(8,8);
         maze.setSource(1,6);
         maze.setTarget(6,4);

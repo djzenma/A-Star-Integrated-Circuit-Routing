@@ -105,7 +105,7 @@ public class AStar {
         int z = currentNode.getZ();
 
         int lowerRow = x + 1;
-        if (lowerRow < rows) {
+        if (lowerRow < rows) {  // Check row down
             //if (col - 1 >= 0) {
                 //checkNode(currentNode, col - 1, lowerRow, getDiagonalCost()); // Comment this line if diagonal movements are not allowed
             //}
@@ -113,6 +113,12 @@ public class AStar {
                 //checkNode(currentNode, col + 1, lowerRow, getDiagonalCost()); // Comment this line if diagonal movements are not allowed
             //}
             checkNode(currentNode, lowerRow, y, M2, getM2Cost());
+        }
+        if (currentNode.getZ() - 1 >= 0) {   // Check down
+            checkLevelDown(currentNode);
+        }
+        if (currentNode.getZ() + 1 < height) {   // Check up
+            checkLevelUp(currentNode);
         }
     }
 
@@ -122,7 +128,7 @@ public class AStar {
         int z = currentNode.getZ();
 
         int upperRow = x - 1;
-        if (upperRow >= 0) {
+        if (upperRow >= 0) {    // Check a row up
             //if (col - 1 >= 0) {
             //checkNode(currentNode, col - 1, upperRow, getDiagonalCost()); // Comment this if diagonal movements are not allowed
             //}
@@ -131,58 +137,75 @@ public class AStar {
             //}
             checkNode(currentNode, upperRow, y, M2, getM2Cost());
         }
+        if (currentNode.getZ() - 1 >= 0) {   // Check down
+            checkLevelDown(currentNode);
+        }
+        if (currentNode.getZ() + 1 < height) {   // Check up
+            checkLevelUp(currentNode);
+        }
     }
 
     private void addAdjacentMiddleRow(Node currentNode) {
-        int x = currentNode.getX();
-        int y = currentNode.getY();
-        int z = currentNode.getZ();
+        if (currentNode.getY() - 1 >= 0) {   // Check left
+            checkLevelLeft(currentNode);
+        }
+        if (currentNode.getY() + 1 < cols) {     // Check right
+            checkLevelRight(currentNode);
+        }
+        if (currentNode.getZ() - 1 >= 0) {   // Check down
+            checkLevelDown(currentNode);
+        }
+        if (currentNode.getZ() + 1 < height) {   // Check up
+            checkLevelUp(currentNode);
+        }
+    }
 
-        if (y - 1 >= 0) {   // Check left
-            int cost;
-            if(z == M1)
-                cost = getM1Cost();
-            else if(z == M3)
-                cost = getM3Cost();
-            else {
-                cost = 100;
-                System.out.println("Logic Error: It went left on a Metal 2");
-            }
-            checkNode(currentNode, x, y - 1, z, cost);
-        }
-        if (y + 1 < cols) {     // Check right
-            int cost;
-            if(z == M1)
-                cost = getM1Cost();
-            else if(z == M3)
-                cost = getM3Cost();
-            else {
-                cost = 100;
-                System.out.println("Logic Error: It went right on a Metal 2");
-            }
-            checkNode(currentNode, x, y + 1, z, cost);
-        }
-        if (z - 1 >= 0) {   // Check down
-            int cost;
-            if(z == M2)
-                cost = getM1M2Cost();
-            else if(z == M3)
-                cost = getM2M3Cost();
-            else
-                cost = 100;
-            checkNode(currentNode, x, y, z-1, cost);
-        }
-        if (z + 1 < height) {   // Check up
-            int cost;
-            if(z == M1)
-                cost = getM1M2Cost();
-            else if(z == M2)
-                cost = getM2M3Cost();
-            else
-                cost = 100;
-            checkNode(currentNode, x, y, z+1, cost);
-        }
+    private void checkLevelUp(Node currentNode) {
+        int cost;
+        if(currentNode.getZ() == M1)
+            cost = getM1M2Cost();
+        else if(currentNode.getZ() == M2)
+            cost = getM2M3Cost();
+        else
+            cost = 100;
+        checkNode(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ()+1, cost);
+    }
 
+    private void checkLevelDown(Node currentNode) {
+        int cost;
+        if(currentNode.getZ() == M2)
+            cost = getM1M2Cost();
+        else if(currentNode.getZ() == M3)
+            cost = getM2M3Cost();
+        else
+            cost = 100;
+        checkNode(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ()-1, cost);
+    }
+
+    private void checkLevelLeft(Node currentNode) {
+        int cost;
+        if(currentNode.getZ() == M1)
+            cost = getM1Cost();
+        else if(currentNode.getZ() == M3)
+            cost = getM3Cost();
+        else {
+            cost = 100;
+            System.out.println("Logic Error: It went left on a Metal 2");
+        }
+        checkNode(currentNode, currentNode.getX(), currentNode.getY() - 1, currentNode.getZ(), cost);
+    }
+
+    private void checkLevelRight(Node currentNode) {
+        int cost;
+        if(currentNode.getZ() == M1)
+            cost = getM1Cost();
+        else if(currentNode.getZ() == M3)
+            cost = getM3Cost();
+        else {
+            cost = 100;
+            System.out.println("Logic Error: It went right on a Metal 2");
+        }
+        checkNode(currentNode, currentNode.getX(), currentNode.getY() + 1, currentNode.getZ(), cost);
     }
 
 
