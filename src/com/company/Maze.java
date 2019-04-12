@@ -58,7 +58,8 @@ public class Maze {
 
     public List<Node> findShortestPath() {
         AStar aStar = new AStar(this.rows, this.cols, this.height, getSource(), getTarget());
-        aStar.setBlocks(this.blocks);
+        if(this.blocks != null)
+            aStar.setBlocks(this.blocks);
         return aStar.findPath();
     }
 
