@@ -1,7 +1,7 @@
 package GUI;
 
-import com.Node;
-import com.Printer;
+import Algorithm.Node;
+import Algorithm.Printer;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 

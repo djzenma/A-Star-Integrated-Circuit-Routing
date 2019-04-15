@@ -1,4 +1,4 @@
-package com;
+package Algorithm;
 
 public class Node {
 
@@ -49,7 +49,7 @@ public class Node {
 
     @Override
     public String toString() {
-        return "com.Node (" + x + ", " + y + ", " + z + ")";
+        return "Node (" + x + ", " + y + ", " + z + ")";
     }
 
     public int getH() {

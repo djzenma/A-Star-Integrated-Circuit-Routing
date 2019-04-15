@@ -1,4 +1,4 @@
-package com;
+package Algorithm;
 
 public interface Printer {
     void result(String output);

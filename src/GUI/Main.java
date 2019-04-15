@@ -1,6 +1,6 @@
 package GUI;
 
-import com.Node;
+import Algorithm.Node;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,13 +19,7 @@ public class Main extends Application {
         controller = new Controller();
         GridPane gridContainer = new GridPane();
 
-        com.Main.main(controller);   // Take inputs and Run the A* Algorithm
-        for (Node n: controller.srcPins) {
-            System.out.println("Source: "+ n);
-        }
-        for (Node n: controller.targetPins) {
-            System.out.println("target: "+ n);
-        }
+        Algorithm.Main.main(controller);   // Take inputs and Run the A* Algorithm
 
         int[][][] maze = controller.maze;
         int rows = controller.rows;

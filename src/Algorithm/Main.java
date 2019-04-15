@@ -1,4 +1,4 @@
-package com;
+package Algorithm;
 
 
 import GUI.Controller;
