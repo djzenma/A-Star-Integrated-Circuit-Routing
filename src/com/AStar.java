@@ -1,4 +1,4 @@
-package com.company;
+package com;
 
 import java.util.*;
 
@@ -33,7 +33,7 @@ public class AStar {
         this.setInitialNode(initialNode);
         this.setFinalNode(finalNode);
         this.searchArea = new Node[rows][cols][height];
-        //this.openList = new PriorityQueue<>(Comparator.comparingInt(Node::getF));
+        //this.openList = new PriorityQueue<>(Comparator.comparingInt(com.Node::getF));
         this.setNodes();
         //this.closedSet = new HashSet<>();
     }

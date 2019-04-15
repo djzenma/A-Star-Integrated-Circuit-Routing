@@ -1,10 +1,8 @@
-package com.company;
+package com;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class Maze {
     private static final int M1_CELL = 1;
@@ -97,8 +95,9 @@ public class Maze {
         return array;
     }
 
-    public void print() {
+    public String print() {
         String val;
+        StringBuilder output = new StringBuilder();
 
         for(int k=0; k<this.height; k++) {
              for (int i=0; i<this.rows; i++) {
@@ -114,19 +113,25 @@ public class Maze {
                             val = "";
                             break;
                     }
-                    if(val.equals(""))
+                    if(val.equals("")) {
                         System.out.print(maze[i][j][k] + " ");
-                    else
+                        output.append(maze[i][j][k]).append(" ");
+                    }
+                    else {
                         System.out.print(val + " ");
+                        output.append(val).append(" ");
+                    }
                 } // End of j loop
                  System.out.println("");
             } // End of i loop
             int metalNum = k + 1;
             System.out.println("\nMetal " + metalNum + "\n");
         } // End of k loop
+
+        return output.toString();
     }
 
-    public void printPath(List<Node> path) {
+    public String printPath(List<Node> path) {
         int val;
         for (Node node : path) {
             switch (node.getZ()) {
@@ -145,9 +150,11 @@ public class Maze {
             }
             this.maze[node.getX()][node.getY()][node.getZ()] = val;
         }
-        this.print();
+        return this.print();
     }
 
-
+    public int[][][] getMaze() {
+        return maze;
+    }
 
 }

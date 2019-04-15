@@ -1,12 +1,14 @@
-package com.company;
+package com;
 
+
+import GUI.Controller;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(Controller controller) {
         Scanner scanner = new Scanner(System.in);
         int[] initialization = Input.takeGridDimsAndViaCost(scanner);
 
@@ -48,6 +50,7 @@ public class Main {
             if(!invalidCells && path.size() != 0) {
                 System.out.println("Path Found!");
                 maze.printPath(path);
+                controller.setMaze(maze.getMaze(), initialization[0], initialization[1]);
             }
             else if(invalidCells) {
                 System.out.println("Invalid cells, check above messages...");
@@ -87,4 +90,5 @@ public class Main {
         System.out.println("Have a nice day!");
         scanner.close();
     }
+
 }
