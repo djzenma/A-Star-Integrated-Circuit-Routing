@@ -62,8 +62,10 @@ public class Main {
             // Ask to enter new cells
             System.out.println("Want to enter new cells? y/n");
             cmd = scanner.next();
-            if(cmd.toLowerCase().equals("n"))
+            if(cmd.toLowerCase().equals("n")) {
+                controller.setPins(maze.sourcesList, maze.targetList);
                 break;
+            }
             else {
                 // make the last path into obstacles then repeat
                 if(!invalidCells) {

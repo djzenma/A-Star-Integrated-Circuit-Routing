@@ -1,5 +1,6 @@
 package GUI;
 
+import com.Node;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,7 +19,14 @@ public class Main extends Application {
         controller = new Controller();
         GridPane gridContainer = new GridPane();
 
-        com.Main.main(controller);
+        com.Main.main(controller);   // Take inputs and Run the A* Algorithm
+        for (Node n: controller.srcPins) {
+            System.out.println("Source: "+ n);
+        }
+        for (Node n: controller.targetPins) {
+            System.out.println("target: "+ n);
+        }
+
         int[][][] maze = controller.maze;
         int rows = controller.rows;
         int cols = controller.cols;
@@ -66,7 +74,7 @@ public class Main extends Application {
         gridContainer.add(controller.metal3, 2, 0);
         gridContainer.add(m3, 2, 1);
 
-        gridContainer.setHgap(10.0);
+        gridContainer.setHgap(20.0);
         gridContainer.setAlignment(Pos.CENTER);
 
 

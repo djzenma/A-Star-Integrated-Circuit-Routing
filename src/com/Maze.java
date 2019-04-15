@@ -21,6 +21,8 @@ public class Maze {
 
     private List<int[]> blocks;
 
+    public List<Node> sourcesList, targetList; // used only by the GUI
+
     public Maze(int rows, int cols, Node sourceNode, Node targetNode) {
         this.rows = rows;
         this.cols = cols;
@@ -40,6 +42,10 @@ public class Maze {
 
         this.src = sourceNode;
         this.target = targetNode;
+
+        // Used by the GUI
+        this.sourcesList = new ArrayList<>();
+        this.targetList = new ArrayList<>();
     }
 
     public void setSource(int x, int y, int z) throws Exception {
@@ -83,6 +89,8 @@ public class Maze {
     }
 
     public List<Node> findShortestPath() {
+        this.sourcesList.add(this.getSource());  // Used by the GUI
+        this.targetList.add(this.getTarget());   // Used by the GUI
         return this.aStar.findPath();
     }
 
