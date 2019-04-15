@@ -161,6 +161,10 @@ public class Maze {
         return this.print();
     }
 
+    public long getCpuTime() {
+        return this.aStar.getCpuTime();
+    }
+
     public int[][][] getMaze() {
         return maze;
     }

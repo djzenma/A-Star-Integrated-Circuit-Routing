@@ -1,5 +1,7 @@
 package Algorithm;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
 import java.util.*;
 
 
@@ -25,6 +27,8 @@ public class AStar {
     private Node initialNode;
     private Node finalNode;
 
+    private long cpuTime, cpuTimeStart;
+
     public AStar(int rows, int cols, int height, Node initialNode, Node finalNode) {
         this.rows = rows;
         this.cols = cols;
@@ -33,9 +37,10 @@ public class AStar {
         this.setInitialNode(initialNode);
         this.setFinalNode(finalNode);
         this.searchArea = new Node[rows][cols][height];
-        //this.openList = new PriorityQueue<>(Comparator.comparingInt(Node::getF));
         this.setNodes();
-        //this.closedSet = new HashSet<>();
+
+        cpuTime = 0;
+        cpuTimeStart = 0;
     }
 
     private void setNodes() {
@@ -87,6 +92,9 @@ public class AStar {
 
     public List<Node> findPath() {
         this.reset();
+
+        this.cpuTimeStart = Utils.getCurrentCpuTime();   // to measure performance
+
         this.openList.add(this.getInitialNode());
         while (!this.isEmpty(this.openList)) {
             Node currentNode = this.openList.poll();
@@ -108,6 +116,8 @@ public class AStar {
             path.add(0, parent);
             currentNode = parent;
         }
+
+        this.cpuTime = Utils.getCurrentCpuTime() - cpuTimeStart;
         return path;
     }
 
@@ -336,6 +346,10 @@ public class AStar {
 
     public static void setM2M3Cost(int m2M3Cost) {
         M2_M3_COST = m2M3Cost;
+    }
+
+    public long getCpuTime() {
+        return this.cpuTime;
     }
 
 }

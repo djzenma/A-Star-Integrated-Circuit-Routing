@@ -85,7 +85,7 @@ public class Controller implements Printer {
     }
 
     public void setInMetal3Grid(Label l, int i, int j) {
-        String metalStyle = "-fx-background-color: #000FFF; -fx-border-color: black; -fx-font-size: 30;";
+        String metalStyle = "-fx-background-color: #000FFF; -fx-border-color: black; -fx-font-size: 15;";
         String pinStyle = "-fx-background-color: #000FFF; -fx-border-color: black; -fx-text-fill: #E7E7E7; -fx-font-size: 20;";
         l.setMinHeight(30.0);
         l.setMaxHeight(30.0);

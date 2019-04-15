@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(Controller controller) {
         Scanner scanner = new Scanner(System.in);
-        int[] initialization = Input.takeGridDimsAndViaCost(scanner);
+        int[] initialization = Utils.takeGridDimsAndViaCost(scanner);
 
         Maze maze = null;
 
@@ -22,8 +22,8 @@ public class Main {
             boolean invalidCells = false;
 
             // Take Source and Target coordinates
-            int[] sourceCoords = Input.takeCoordinates("Enter The New Source Cell's Coordinates: ", scanner);
-            int[] targetCoords = Input.takeCoordinates("Enter The New Target Cell's Coordinates: ", scanner);
+            int[] sourceCoords = Utils.takeCoordinates("Enter The New Source Cell's Coordinates: ", scanner);
+            int[] targetCoords = Utils.takeCoordinates("Enter The New Target Cell's Coordinates: ", scanner);
             // If first time, initialize the maze grid
             if(firstTime) {
                 maze = new Maze(initialization[0], initialization[1], new Node(sourceCoords[0], sourceCoords[1], sourceCoords[2]), new Node(targetCoords[0], targetCoords[1], targetCoords[2]));
@@ -56,6 +56,7 @@ public class Main {
                 int viasCount = calculateNumVias(path);
                 int cost = cellsCount + (viasCount * viaCost);
                 System.out.println("Cost = " + cost);
+                System.out.println("CPU Time = " + maze.getCpuTime() + "ns");
             }
             else if(invalidCells) {
                 System.out.println("Invalid cells, check above messages...");

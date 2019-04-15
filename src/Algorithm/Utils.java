@@ -1,8 +1,10 @@
 package Algorithm;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
 import java.util.Scanner;
 
-public class Input {
+public class Utils {
 
     public static int[] takeGridDimsAndViaCost(Scanner reader) {
         System.out.print("Grid_Width: ");
@@ -31,5 +33,11 @@ public class Input {
         return new int[]{x, y, z};
     }
 
+    /** Get CPU time in nanoseconds. */
+    public static long getCurrentCpuTime( ) {
+        ThreadMXBean bean = ManagementFactory.getThreadMXBean( );
+        return bean.isCurrentThreadCpuTimeSupported( ) ?
+                bean.getCurrentThreadCpuTime( ) : 0L;
+    }
 
 }
