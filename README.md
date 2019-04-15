@@ -13,7 +13,8 @@ Run the code from the GUI/Main.class using your favorite IDE or command interpre
 The result will be displayed on a beautiful simple GUI once you don't want to enter new cells.
 
 Test case Example:
-Source 0: (0, 4, 2)    target: (5, 2, 1)
-Source 1: (1, 2, 0)    target: (3, 5, 1)
-Source 2: (1, 1, 1)    target: (0, 0, 0)
-Source 3: (2, 2, 2)    target: (7, 7, 0)
+Source 0: (0, 4, 2)    Target 0: (5, 2, 1) <br\>
+Source 1: (1, 2, 0)    Target 1: (3, 5, 1) <br\>
+Source 2: (1, 1, 1)    Target 2: (0, 0, 0) <br\>
+Source 3: (2, 2, 2)    Target 3: (7, 7, 0) <br\>
+
