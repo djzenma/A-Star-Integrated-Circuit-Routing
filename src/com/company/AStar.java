@@ -38,10 +38,6 @@ public class AStar {
         //this.closedSet = new HashSet<>();
     }
 
-    //public AStar(int rows, int cols, int height, Node initialNode, Node finalNode) {
-      //  this(rows, cols, height, initialNode, finalNode, M1_COST, M2_COST, M3_COST);
-    //}
-
     private void setNodes() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -90,8 +86,6 @@ public class AStar {
     }
 
     public List<Node> findPath() {
-        //System.out.println("Initial node: " + this.getInitialNode());
-        //System.out.println("Final node: " + this.getFinalNode());
         this.reset();
         this.openList.add(this.getInitialNode());
         while (!this.isEmpty(this.openList)) {
@@ -119,27 +113,21 @@ public class AStar {
 
     private void addAdjacentNodes(Node currentNode) {
         if(currentNode.getZ() == M1 || currentNode.getZ() == M3) {
-            this.addAdjacentMiddleRow(currentNode);
+            this.addMiddleRow(currentNode);
         }
         else {  // is Metal 2
-            this.addAdjacentUpperRow(currentNode);
-            this.addAdjacentLowerRow(currentNode);
+            this.addUpperRow(currentNode);
+            this.addLowerRow(currentNode);
         }
     }
 
-    private void addAdjacentLowerRow(Node currentNode) {
+    private void addLowerRow(Node currentNode) {
         int x = currentNode.getX();
         int y = currentNode.getY();
         int z = currentNode.getZ();
 
         int lowerRow = x + 1;
         if (lowerRow < this.rows) {  // Check row down
-            //if (col - 1 >= 0) {
-                //checkNode(currentNode, col - 1, lowerRow, getDiagonalCost()); // Comment this line if diagonal movements are not allowed
-            //}
-            //if (col + 1 < getSearchArea()[0].length) {
-                //checkNode(currentNode, col + 1, lowerRow, getDiagonalCost()); // Comment this line if diagonal movements are not allowed
-            //}
             this.checkNode(currentNode, lowerRow, y, M2, this.getM2Cost());
         }
         if (currentNode.getZ() - 1 >= 0) {   // Check down
@@ -150,19 +138,13 @@ public class AStar {
         }
     }
 
-    private void addAdjacentUpperRow(Node currentNode) {
+    private void addUpperRow(Node currentNode) {
         int x = currentNode.getX();
         int y = currentNode.getY();
         int z = currentNode.getZ();
 
         int upperRow = x - 1;
         if (upperRow >= 0) {    // Check a row up
-            //if (col - 1 >= 0) {
-            //checkNode(currentNode, col - 1, upperRow, getDiagonalCost()); // Comment this if diagonal movements are not allowed
-            //}
-            //if (col + 1 < getSearchArea()[0].length) {
-            //    checkNode(currentNode, col + 1, upperRow, getDiagonalCost()); // Comment this if diagonal movements are not allowed
-            //}
             this.checkNode(currentNode, upperRow, y, M2, this.getM2Cost());
         }
         if (currentNode.getZ() - 1 >= 0) {   // Check down
@@ -173,7 +155,7 @@ public class AStar {
         }
     }
 
-    private void addAdjacentMiddleRow(Node currentNode) {
+    private void addMiddleRow(Node currentNode) {
         if (currentNode.getY() - 1 >= 0) {   // Check left
             this.checkLevelLeft(currentNode);
         }
@@ -321,7 +303,7 @@ public class AStar {
     }
 
     public void setM1Cost(int m1Cost) {
-        this.M1_COST = m1Cost;
+        M1_COST = m1Cost;
     }
 
     public int getM2Cost() {
@@ -329,7 +311,7 @@ public class AStar {
     }
 
     public void setM2Cost(int m2Cost) {
-        this.M2_COST = m2Cost;
+        M2_COST = m2Cost;
     }
 
     public int getM3Cost() {
@@ -337,7 +319,7 @@ public class AStar {
     }
 
     public void setM3Cost(int m3Cost) {
-        this.M3_COST = m3Cost;
+        M3_COST = m3Cost;
     }
 
     public static int getM1M2Cost() {

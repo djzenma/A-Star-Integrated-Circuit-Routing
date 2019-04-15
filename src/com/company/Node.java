@@ -23,9 +23,8 @@ public class Node {
     }
 
     public void setNodeData(Node currentNode, int cost) {
-        int gCost = currentNode.getG() + cost;
         setParent(currentNode);
-        setG(gCost);
+        setG(currentNode.getG() + cost);
         calculateFinalCost();
     }
 
