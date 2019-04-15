@@ -1,6 +1,10 @@
 package com.company;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Maze {
     private static final int M1_CELL = 1;
@@ -10,34 +14,56 @@ public class Maze {
     private static final int TARGET_CELL = 5;
 
     private int[][][] maze;
+    private AStar aStar;
+
     private int rows, cols;
     private int height = 3;
-    private Node src, target;
-    private int[][] blocks;
 
-    public Maze(int rows, int cols) {
+    private Node src, target;
+
+    private List<int[]> blocks;
+
+    public Maze(int rows, int cols, Node sourceNode, Node targetNode) {
         this.rows = rows;
         this.cols = cols;
         maze = new int[this.rows][this.cols][this.height];
-
         for (int i=0; i<this.rows; i++) {
             for (int j=0; j<this.cols; j++) {
                 for(int k=0; k<this.height; k++)
                     maze[i][j][k] = 0;
             }
         }
+
+        blocks = new ArrayList<>();
+
+        sourceNode.setBlock(false);
+        targetNode.setBlock(false);
+        this.aStar = new AStar(this.rows, this.cols, this.height, sourceNode, targetNode);
+
+        this.src = sourceNode;
+        this.target = targetNode;
     }
 
-    public void setSource(int x, int y) {
-        for(int z = 0; z<this.height; z++)
-            maze[x][y][z] = SOURCE_CELL;
-        this.src = new Node(x,y, AStar.M1);
+    public void setSource(int x, int y, int z) throws Exception {
+        if(this.aStar.isBlock(new Node(x,y,z)))
+            throw new Exception("Source cell in a node that is already occupied!");
+        else{
+            this.maze[x][y][z] = SOURCE_CELL;
+            this.src = new Node(x, y, z);
+            this.src.setBlock(false);
+            this.aStar.setInitialNode(this.src);
+        }
     }
 
-    public void setTarget(int x, int y) {
-        for(int z = 0; z<this.height; z++)
-            maze[x][y][z] = TARGET_CELL;
-        this.target = new Node(x,y, AStar.M1);
+    public void setTarget(int x, int y, int z) throws Exception {
+        if(this.aStar.isBlock(new Node(x,y,z)))
+            throw new Exception("Target cell in a node that is already occupied!");
+        else {
+            this.maze[x][y][z] = TARGET_CELL;
+            this.target = new Node(x, y, z);
+            this.target.setBlock(false);
+            this.aStar.setFinalNode(this.target);
+        }
     }
 
     public Node getSource() {
@@ -49,18 +75,26 @@ public class Maze {
     }
 
     public void setBlocks(int[][] blocksArray) {
-        this.blocks = blocksArray;
+        this.blocks.addAll(Arrays.asList(blocksArray));
+        this.aStar.setBlocks(convertListTo2dArray(this.blocks));
+        //this.blocks = blocksArray;
     }
 
     public void setMetal(int x, int y, int metalNumber) {
-        maze[x][y][metalNumber] = 1;
+        this.maze[x][y][metalNumber] = 1;
     }
 
     public List<Node> findShortestPath() {
-        AStar aStar = new AStar(this.rows, this.cols, this.height, getSource(), getTarget());
-        if(this.blocks != null)
-            aStar.setBlocks(this.blocks);
-        return aStar.findPath();
+        return this.aStar.findPath();
+    }
+
+    private int[][] convertListTo2dArray(List<int[]> list) {
+        int[][] array = new int[list.size()][];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = new int[list.get(i).length];
+            array[i] = list.get(i);
+        }
+        return array;
     }
 
     public void print() {
@@ -109,7 +143,7 @@ public class Maze {
                     val = 0;
                     break;
             }
-            maze[node.getX()][node.getY()][node.getZ()] = val;
+            this.maze[node.getX()][node.getY()][node.getZ()] = val;
         }
         this.print();
     }

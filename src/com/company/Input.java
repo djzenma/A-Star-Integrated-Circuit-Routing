@@ -25,7 +25,10 @@ public class Input {
         System.out.print("y: ");
         int y = reader.nextInt();
 
-        return new int[]{x, y};
+        System.out.print("z: ");
+        int z = reader.nextInt();
+
+        return new int[]{x, y, z};
     }
 
 
