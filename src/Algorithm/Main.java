@@ -44,13 +44,18 @@ public class Main {
             if(!invalidCells)
                 path = maze.findShortestPath();
 
-            maze.print();
+            //maze.print();
 
             // Print if the path was found
             if(!invalidCells && path.size() != 0) {
                 System.out.println("Path Found!");
                 maze.printPath(path);
                 controller.setMaze(maze.getMaze(), initialization[0], initialization[1]);
+                int cellsCount = path.size();
+                int viaCost = initialization[2];
+                int viasCount = calculateNumVias(path);
+                int cost = cellsCount + (viasCount * viaCost);
+                System.out.println("Cost = " + cost);
             }
             else if(invalidCells) {
                 System.out.println("Invalid cells, check above messages...");
@@ -70,9 +75,9 @@ public class Main {
                 // make the last path into obstacles then repeat
                 if(!invalidCells) {
                     int[][] blocks = new int[path.size()][];
-                    for (Node n: path) {
-                        System.out.println(n);
-                    }
+                    //for (Node n: path) {
+                    //    System.out.println(n);
+                    //}
                     int i = 0;
                     for (Node node : path) {
                         blocks[i] = new int[3];
@@ -91,6 +96,20 @@ public class Main {
 
         System.out.println("Have a nice day!");
         scanner.close();
+    }
+
+
+    private static int calculateNumVias(List<Node> path) {
+        int lastZ = path.get(0).getZ();
+        int vias = 0;
+
+        for (int i = 1; i < path.size(); i++) {
+            if(path.get(i).getZ() - lastZ != 0)
+                vias++;
+            lastZ = path.get(i).getZ();
+        }
+
+        return vias;
     }
 
 }
