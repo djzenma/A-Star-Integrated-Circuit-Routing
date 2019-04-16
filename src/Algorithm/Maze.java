@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ *  Interface between the Algorithm's Main Class and the AStar Class
+ */
 public class Maze {
     private static final int M1_CELL = 1;
     private static final int M2_CELL = 2;
@@ -23,6 +26,12 @@ public class Maze {
 
     public List<Node> sourcesList, targetList; // used only by the GUI
 
+    /**
+     * @param rows: rows of the Grid
+     * @param cols: columns of the Grid
+     * @param sourceNode: The first source node to be placed
+     * @param targetNode: The first target node to be placed
+     */
     public Maze(int rows, int cols, Node sourceNode, Node targetNode) {
         this.rows = rows;
         this.cols = cols;
@@ -48,6 +57,12 @@ public class Maze {
         this.targetList = new ArrayList<>();
     }
 
+    /**
+     * @param x coordinate of the source pin
+     * @param y coordinate of the source pin
+     * @param z coordinate of the source pin
+     * @throws Exception in case the source is already occupied
+     */
     public void setSource(int x, int y, int z) throws Exception {
         if(this.aStar.isBlock(new Node(x,y,z)))
             throw new Exception("Source cell in a node that is already occupied!");
@@ -59,6 +74,12 @@ public class Maze {
         }
     }
 
+    /**
+     * @param x coordinate of the target pin
+     * @param y coordinate of the target pin
+     * @param z coordinate of the target pin
+     * @throws Exception in case the target is already occupied
+     */
     public void setTarget(int x, int y, int z) throws Exception {
         if(this.aStar.isBlock(new Node(x,y,z)))
             throw new Exception("Target cell in a node that is already occupied!");
@@ -78,6 +99,11 @@ public class Maze {
         return this.target;
     }
 
+    /**
+     * Sets the obstacles in the Grid
+     * @param blocksArray which is an array of the obstacles to be placed, each element in this array
+     *                    is another array of size 3 which contains the x,y,z coordinates of the obstacle
+     */
     public void setBlocks(int[][] blocksArray) {
         this.blocks.addAll(Arrays.asList(blocksArray));
         this.aStar.setBlocks(convertListTo2dArray(this.blocks));
@@ -88,12 +114,20 @@ public class Maze {
         this.maze[x][y][metalNumber] = 1;
     }
 
+
+    /**
+     * @return The Shortest Path
+     */
     public List<Node> findShortestPath() {
         this.sourcesList.add(this.getSource());  // Used by the GUI
         this.targetList.add(this.getTarget());   // Used by the GUI
         return this.aStar.findPath();
     }
 
+    /**
+     * @param list which is an array f type List
+     * @return the list but in type 2d array
+     */
     private int[][] convertListTo2dArray(List<int[]> list) {
         int[][] array = new int[list.size()][];
         for (int i = 0; i < array.length; i++) {
@@ -103,6 +137,9 @@ public class Maze {
         return array;
     }
 
+    /**
+     * Prints in the console the grid
+     */
     public String print() {
         String val;
         StringBuilder output = new StringBuilder();
@@ -139,6 +176,7 @@ public class Maze {
         return output.toString();
     }
 
+    /** Prints the new Path in the Grid*/
     public String printPath(List<Node> path) {
         int val;
         for (Node node : path) {
@@ -161,10 +199,17 @@ public class Maze {
         return this.print();
     }
 
+
+    /**
+     * @return CPU Time calculated by the AStar class
+     */
     public long getCpuTime() {
         return this.aStar.getCpuTime();
     }
 
+    /**
+     * @return the 3d Maze Grid
+     */
     public int[][][] getMaze() {
         return maze;
     }

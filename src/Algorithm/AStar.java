@@ -1,10 +1,11 @@
 package Algorithm;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadMXBean;
 import java.util.*;
 
 
+/**
+ * The actual AStar Algorithm Class
+ */
 public class AStar {
     public static final int M1 = 0;
     public static final int M2 = 1;
@@ -29,6 +30,13 @@ public class AStar {
 
     private long cpuTime, cpuTimeStart;
 
+    /**
+     * @param rows number of rows in the search Area
+     * @param cols number of columns in the search Area
+     * @param height height of the search Area
+     * @param initialNode The very first Source node in the search Area
+     * @param finalNode The very first Target node in the search Area
+     */
     public AStar(int rows, int cols, int height, Node initialNode, Node finalNode) {
         this.rows = rows;
         this.cols = cols;
@@ -43,6 +51,10 @@ public class AStar {
         cpuTimeStart = 0;
     }
 
+
+    /**
+     * Initializes the The search area with idle nodes
+     */
     private void setNodes() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -56,6 +68,12 @@ public class AStar {
         }
     }
 
+
+    /**
+     *  Resets the openList and ClosedSet, i.e destroys them and makes new ones.
+     *  And Recalculates the heuristic of each node as the final Node most probably have changed when the user entered new coordinates.
+     *  Used When calculating a new path by the findPath method.
+     */
     private void reset() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -70,6 +88,9 @@ public class AStar {
         this.closedSet = new HashSet<>();
     }
 
+    /**
+     * @param blocksArray coordinates of the obstacles to be placed
+     */
     public void setBlocks(int[][] blocksArray) {
         for (int[] aBlocksArray : blocksArray) {
             int x = aBlocksArray[0];
@@ -90,10 +111,15 @@ public class AStar {
         }
     }
 
+    /**
+     * The Actual A* Algorithm
+     * @return Path List containing the nodes used by the path.
+     * If path.size() is 0 then no path had been found.
+     */
     public List<Node> findPath() {
         this.reset();
 
-        this.cpuTimeStart = Utils.getCurrentCpuTime();   // to measure performance
+        this.cpuTimeStart = Utils.getCurrentCpuTime();   // to measure performance, Start recording
 
         this.openList.add(this.getInitialNode());
         while (!this.isEmpty(this.openList)) {
@@ -108,6 +134,12 @@ public class AStar {
         return new ArrayList<Node>();
     }
 
+
+    /**
+     * Traces the parent from a given current Node all the way up to the source node To return the Path between them.
+     * @param currentNode
+     * @return Path from the currentNode to the oldest parent in the path.
+     */
     private List<Node> getPath(Node currentNode) {
         List<Node> path = new ArrayList<Node>();
         path.add(currentNode);
@@ -121,6 +153,9 @@ public class AStar {
         return path;
     }
 
+    /** Looks what in what metal is the given Node in, then sees what Nodes it can check
+     * @param currentNode
+     */
     private void addAdjacentNodes(Node currentNode) {
         if(currentNode.getZ() == M1 || currentNode.getZ() == M3) {
             this.addMiddleRow(currentNode);
@@ -131,6 +166,9 @@ public class AStar {
         }
     }
 
+    /** Checks a row down, a metal down, and a metal up
+     * @param currentNode
+     */
     private void addLowerRow(Node currentNode) {
         int x = currentNode.getX();
         int y = currentNode.getY();
@@ -148,6 +186,9 @@ public class AStar {
         }
     }
 
+    /** Checks a row up, a metal down, and a metal up
+     * @param currentNode
+     */
     private void addUpperRow(Node currentNode) {
         int x = currentNode.getX();
         int y = currentNode.getY();
@@ -165,6 +206,9 @@ public class AStar {
         }
     }
 
+    /** Checks left col, right col, a metal down, and a metal up
+     * @param currentNode
+     */
     private void addMiddleRow(Node currentNode) {
         if (currentNode.getY() - 1 >= 0) {   // Check left
             this.checkLevelLeft(currentNode);
@@ -180,6 +224,10 @@ public class AStar {
         }
     }
 
+
+    /** Checks a Metal Level Higher
+     * @param currentNode
+     */
     private void checkLevelUp(Node currentNode) {
         int cost;
         if(currentNode.getZ() == M1)
@@ -193,6 +241,9 @@ public class AStar {
         this.checkNode(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ()+1, cost);
     }
 
+    /** Checks a Metal Level Lower
+     * @param currentNode
+     */
     private void checkLevelDown(Node currentNode) {
         int cost;
         if(currentNode.getZ() == M2)
@@ -206,6 +257,9 @@ public class AStar {
         this.checkNode(currentNode, currentNode.getX(), currentNode.getY(), currentNode.getZ()-1, cost);
     }
 
+    /** Checks for Column Left
+     * @param currentNode
+     */
     private void checkLevelLeft(Node currentNode) {
         int cost;
         if(currentNode.getZ() == M1)
@@ -219,6 +273,9 @@ public class AStar {
         this.checkNode(currentNode, currentNode.getX(), currentNode.getY() - 1, currentNode.getZ(), cost);
     }
 
+    /** Checks for Column Right
+     * @param currentNode
+     */
     private void checkLevelRight(Node currentNode) {
         int cost;
         if(currentNode.getZ() == M1)
@@ -251,21 +308,46 @@ public class AStar {
         }
     }
 
+
+    /** Checks if the input node is the target node
+     * @param currentNode input node
+     * @return true if final node, false otherwise
+     */
     private boolean isFinalNode(Node currentNode) {
         return (currentNode.getX() == this.finalNode.getX() && currentNode.getY() == this.finalNode.getY() && currentNode.getZ() == this.finalNode.getZ());
     }
 
+    /**
+     * @param openList the Open List
+     * @return true if the open List is empty, otherwise false.
+     */
     private boolean isEmpty(PriorityQueue<Node> openList) {
         return this.openList.size() == 0;
     }
 
+
+    /**
+     * @param x coordinate of the Node becoming an obstacle
+     * @param y coordinate of the Node becoming an obstacle
+     * @param z coordinate of the Node becoming an obstacle
+     */
     private void setBlock(int x, int y, int z) {
         this.searchArea[x][y][z].setBlock(true);
     }
 
+    /**
+     * @param node input node
+     * @return true of the node is an obstacle, false otherwise.
+     */
     public boolean isBlock(Node node) {
         return this.searchArea[node.getX()][node.getY()][node.getZ()].isBlock();
     }
+
+
+    /**
+     * Then, A Bunch of Getters and Setters
+     *
+     */
 
     public Node getInitialNode() {
         return this.initialNode;

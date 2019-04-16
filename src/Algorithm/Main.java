@@ -1,13 +1,21 @@
 package Algorithm;
 
 
+
 import GUI.Controller;
 
 import java.util.List;
 import java.util.Scanner;
 
+
+/**
+ * Main of the A* Algorithm, where all the backend and the logic happen
+ */
 public class Main {
 
+    /**
+     * @param controller: Interface between the GUI Main class and this Algorithm Main
+     */
     public static void main(Controller controller) {
         Scanner scanner = new Scanner(System.in);
         int[] initialization = Utils.takeGridDimsAndViaCost(scanner);
@@ -24,12 +32,18 @@ public class Main {
             // Take Source and Target coordinates
             int[] sourceCoords = Utils.takeCoordinates("Enter The New Source Cell's Coordinates: ", scanner);
             int[] targetCoords = Utils.takeCoordinates("Enter The New Target Cell's Coordinates: ", scanner);
+
+            // in case of negative coordinates, terminate
+            if(sourceCoords[0] < 0 || sourceCoords[1] < 0 || sourceCoords[2] < 0 ||
+                    targetCoords[0] < 0 || targetCoords[1] < 0 || targetCoords[2] < 0)
+                break;
+
             // If first time, initialize the maze grid
             if(firstTime) {
                 maze = new Maze(initialization[0], initialization[1], new Node(sourceCoords[0], sourceCoords[1], sourceCoords[2]), new Node(targetCoords[0], targetCoords[1], targetCoords[2]));
                 firstTime = false;
             }
-            // Else, set the new source and target
+            // Else, set the new source and target and check if valid
             else {
                 try {
                     maze.setSource(sourceCoords[0], sourceCoords[1], sourceCoords[2]);
@@ -50,18 +64,20 @@ public class Main {
             if(!invalidCells && path.size() != 0) {
                 System.out.println("Path Found!");
                 maze.printPath(path);
-                controller.setMaze(maze.getMaze(), initialization[0], initialization[1]);
+                controller.setMaze(maze.getMaze(), initialization[0], initialization[1]);   // Pass the new maze to the GUI
+                // Calculate Cost Function
                 int cellsCount = path.size();
                 int viaCost = initialization[2];
                 int viasCount = calculateNumVias(path);
                 int cost = cellsCount + (viasCount * viaCost);
                 System.out.println("Cost = " + cost);
+                // Get CPU Time
                 System.out.println("CPU Time = " + maze.getCpuTime() + "ns");
             }
-            else if(invalidCells) {
+            else if(invalidCells) { // Case user entered occupied coordinates
                 System.out.println("Invalid cells, check above messages...");
             }
-            else {
+            else {  // Case no Path found
                 System.out.println("Path not Found!");
             }
 
@@ -100,6 +116,10 @@ public class Main {
     }
 
 
+    /**
+     * @param path: The path you want to know the vias number of
+     * @return Number of Vias used in the Path
+     */
     private static int calculateNumVias(List<Node> path) {
         int lastZ = path.get(0).getZ();
         int vias = 0;

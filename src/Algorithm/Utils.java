@@ -4,8 +4,18 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 import java.util.Scanner;
 
+/**
+ * A Utility class that has several helper functions
+ */
 public class Utils {
 
+    /**
+     * @param reader Scanner instance
+     * @return An array where, index 0 contains the wanted Width of the grid,
+                index 1 contains the wanted height of the grid,
+                index 2 contains the wanted via Cost
+     *
+     */
     public static int[] takeGridDimsAndViaCost(Scanner reader) {
         System.out.print("Grid_Width: ");
         int w = reader.nextInt();
@@ -19,6 +29,11 @@ public class Utils {
         return new int[]{w, h, via};
     }
 
+    /**
+     * @param msg Message to be displayed in the console before taking the coordinates
+     * @param reader Scanner instance
+     * @return An array of the coordinates x in index 0, y in index 1, z in index 2
+     */
     public static int[] takeCoordinates(String msg, Scanner reader) {
         System.out.println(msg);
         System.out.print("x: ");
@@ -33,7 +48,9 @@ public class Utils {
         return new int[]{x, y, z};
     }
 
-    /** Get CPU time in nanoseconds. */
+    /**
+     * @return Current CPU time in nanoseconds.
+     */
     public static long getCurrentCpuTime( ) {
         ThreadMXBean bean = ManagementFactory.getThreadMXBean( );
         return bean.isCurrentThreadCpuTimeSupported( ) ?

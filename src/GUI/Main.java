@@ -1,6 +1,5 @@
 package GUI;
 
-import Algorithm.Node;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,6 +8,9 @@ import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 
 
+/**
+ *  The Main GUI Class, it waits until the Algorihtm's Main finishes execution and the proceeds with its own execution
+ */
 public class Main extends Application {
     private static Controller controller;
 
@@ -31,12 +33,14 @@ public class Main extends Application {
         String nodeStyle = "-fx-border-color: black; -fx-font-size: 30;";
         String labelStyle = "-fx-font-size: 30;";
 
+        // Initialize the metals grids
         for(int i=0; i<rows; i++) {
             metal1[i] = new Label[cols];
             metal2[i] = new Label[cols];
             metal3[i] = new Label[cols];
         }
 
+        // Fill the grids
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 metal1[i][j] = new Label(Integer.toString(maze[i][j][0]));
@@ -52,6 +56,7 @@ public class Main extends Application {
                 controller.setInMetal3Grid(metal3[i][j], j,i);
             }
         }
+        // Labels for each grid
         Label m1 = new Label("Metal 1");
         Label m2 = new Label("Metal 2");
         Label m3 = new Label("Metal 3");
