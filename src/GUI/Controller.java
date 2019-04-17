@@ -5,6 +5,7 @@ import Algorithm.Printer;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,7 +23,15 @@ public class Controller implements Printer {
     public GridPane metal2 = new GridPane();
     public GridPane metal3 = new GridPane();
 
+    public static String[] hexColors = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
+    public static int currentColor = 0;
+
     public List<Node> srcPins, targetPins;
+
+    public Controller() {
+        this.srcPins = new ArrayList<>();
+        this.targetPins = new ArrayList<>();
+    }
 
     /**
      * @param output Saves the result string, which is the maze but in a string format
@@ -60,7 +69,7 @@ public class Controller implements Printer {
      * @param j coordinate of the label in the Metal 1 Grid
      */
     public void setInMetal1Grid(Label l, int i, int j) {
-        String metalStyle = "-fx-background-color: #33F6FF; -fx-border-color: black; -fx-font-size: 30;";
+        String metalStyle = "-fx-background-color: " + " #33F6FF;" + "-fx-border-color: black; -fx-font-size: 30;";
         String pinStyle = "-fx-background-color: #33F6FF; -fx-border-color: black; -fx-font-size: 20;";
         l.setMinHeight(30.0);
         l.setMaxHeight(30.0);

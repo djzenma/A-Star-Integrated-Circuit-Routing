@@ -1,11 +1,19 @@
 package GUI;
 
+import Algorithm.Maze;
+import Algorithm.Utils;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
+
+import java.util.Scanner;
 
 
 /**
@@ -13,15 +21,59 @@ import javafx.scene.layout.GridPane;
  */
 public class Main extends Application {
     private static Controller controller;
+    private static GridPane gridContainer;
+    public static Scanner scanner;
+    private Stage stage;
+    private Button newCellBtn;
+
+    public static int[] initialization;
+    public static Maze maze = null;
+    public static boolean firstTime = true;
+    public static boolean exit = false;
+    public static boolean wait = false;
+
+    @Override
+    public void init() throws Exception {
+        scanner = new Scanner(System.in);
+        controller = new Controller();
+        gridContainer = new GridPane();
+
+        initialization = Utils.takeGridDimsAndViaCost(scanner);
+
+        maze = null;
+        firstTime = true;
+
+
+        newCellBtn = new Button("New Cells");
+        newCellBtn.setOnMouseClicked(event -> {
+            processNewCells();
+        });
+
+        super.init();
+    }
 
     @Override
     public void start(Stage primaryStage){
         //Parent root = FXMLLoader.load(getClass().getResource("GUI/sample.fxml"));
+        this.stage = primaryStage;
         primaryStage.setTitle("A* Routing");
-        controller = new Controller();
-        GridPane gridContainer = new GridPane();
 
         Algorithm.Main.main(controller);   // Take inputs and Run the A* Algorithm
+        gridContainer = updateUI();
+
+        gridContainer.add(newCellBtn, 0, 2);
+
+        primaryStage.setScene(new Scene(gridContainer, 1024, 516));
+        primaryStage.show();
+    }
+
+    private void processNewCells() {
+        this.start(this.stage);
+    }
+
+
+    private GridPane updateUI() {
+        GridPane gridContainer = new GridPane();
 
         int[][][] maze = controller.maze;
         int rows = controller.rows;
@@ -76,11 +128,9 @@ public class Main extends Application {
         gridContainer.setHgap(20.0);
         gridContainer.setAlignment(Pos.CENTER);
 
-
-        primaryStage.setScene(new Scene(gridContainer, 1024, 516));
-        primaryStage.show();
+        Controller.currentColor = Controller.currentColor + 1 % Controller.hexColors.length;
+        return gridContainer;
     }
-
 
     public static void main(String[] args) {
         launch(args);
