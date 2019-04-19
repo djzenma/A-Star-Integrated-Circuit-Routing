@@ -5,7 +5,6 @@ package Algorithm;
 import GUI.Controller;
 
 import java.util.List;
-import java.util.Scanner;
 
 
 /**
@@ -89,7 +88,7 @@ public class Main {
                 blocks[i][2] = node.getZ();
                 i++;
             }
-            GUI.Main.maze.setBlocks(blocks);
+            GUI.Main.maze.setObstacles(blocks);
         }
 
 

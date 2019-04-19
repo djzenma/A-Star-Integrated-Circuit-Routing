@@ -10,7 +10,7 @@ public class Node {
     private int h;
     private int x;
     private int y;
-    private boolean isBlock;
+    private boolean isObstacle;
     private Node parent;
     private int z;
 
@@ -119,12 +119,12 @@ public class Node {
         this.parent = parent;
     }
 
-    public boolean isBlock() {
-        return isBlock;
+    public boolean isObstacle() {
+        return isObstacle;
     }
 
-    public void setBlock(boolean isBlock) {
-        this.isBlock = isBlock;
+    public void setObstacle(boolean isBlock) {
+        this.isObstacle = isBlock;
     }
 
     public int getX() {

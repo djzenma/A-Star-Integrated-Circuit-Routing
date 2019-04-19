@@ -3,13 +3,10 @@ package GUI;
 import Algorithm.Maze;
 import Algorithm.Utils;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 
@@ -30,7 +27,6 @@ public class Main extends Application {
     public static Maze maze = null;
     public static boolean firstTime = true;
     public static boolean exit = false;
-    public static boolean wait = false;
 
     @Override
     public void init() throws Exception {
@@ -61,7 +57,7 @@ public class Main extends Application {
         Algorithm.Main.main(controller);   // Take inputs and Run the A* Algorithm
         gridContainer = updateUI();
 
-        gridContainer.add(newCellBtn, 0, 2);
+        gridContainer.add(newCellBtn, 1, 2);
 
         primaryStage.setScene(new Scene(gridContainer, 1024, 516));
         primaryStage.show();

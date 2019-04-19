@@ -60,7 +60,7 @@ public class AStar {
             for (int j = 0; j < cols; j++) {
                 for (int k = 0; k < height; k++) {
                     Node node = new Node(i, j, k);
-                    node.setBlock(false);
+                    node.setObstacle(false);
                     node.calculateHeuristic(this.getFinalNode());
                     this.searchArea[i][j][k] = node;
                 }
@@ -96,7 +96,7 @@ public class AStar {
             int x = aBlocksArray[0];
             int y = aBlocksArray[1];
             int z = aBlocksArray[2];
-            this.setBlock(x, y, z);
+            this.setObstacle(x, y, z);
         }
     }
 
@@ -104,7 +104,7 @@ public class AStar {
         for (Node[][] nodeAr2 : this.searchArea) {
             for (Node[] nodeAr1: nodeAr2) {
                 for (Node node:nodeAr1) {
-                    if(node.isBlock())
+                    if(node.isObstacle())
                         System.out.println("Block: " + node.getX() + node.getY() + node.getZ());
                 }
             }
@@ -158,18 +158,18 @@ public class AStar {
      */
     private void addAdjacentNodes(Node currentNode) {
         if(currentNode.getZ() == M1 || currentNode.getZ() == M3) {
-            this.addMiddleRow(currentNode);
+            this.addYZPlane(currentNode);
         }
         else {  // is Metal 2
-            this.addUpperRow(currentNode);
-            this.addLowerRow(currentNode);
+            this.addXZPlanePos(currentNode);
+            this.addXZPlaneNeg(currentNode);
         }
     }
 
     /** Checks a row down, a metal down, and a metal up
      * @param currentNode
      */
-    private void addLowerRow(Node currentNode) {
+    private void addXZPlaneNeg(Node currentNode) {
         int x = currentNode.getX();
         int y = currentNode.getY();
         int z = currentNode.getZ();
@@ -189,7 +189,7 @@ public class AStar {
     /** Checks a row up, a metal down, and a metal up
      * @param currentNode
      */
-    private void addUpperRow(Node currentNode) {
+    private void addXZPlanePos(Node currentNode) {
         int x = currentNode.getX();
         int y = currentNode.getY();
         int z = currentNode.getZ();
@@ -209,7 +209,7 @@ public class AStar {
     /** Checks left col, right col, a metal down, and a metal up
      * @param currentNode
      */
-    private void addMiddleRow(Node currentNode) {
+    private void addYZPlane(Node currentNode) {
         if (currentNode.getY() - 1 >= 0) {   // Check left
             this.checkLevelLeft(currentNode);
         }
@@ -292,7 +292,7 @@ public class AStar {
 
     private void checkNode(Node currentNode, int x, int y, int z,  int cost) {
         Node adjacentNode = this.getSearchArea()[x][y][z];
-        if (!adjacentNode.isBlock() && !this.getClosedSet().contains(adjacentNode)) {
+        if (!adjacentNode.isObstacle() && !this.getClosedSet().contains(adjacentNode)) {
             if (!this.getOpenList().contains(adjacentNode)) {
                 adjacentNode.setNodeData(currentNode, cost);
                 this.getOpenList().add(adjacentNode);
@@ -331,16 +331,16 @@ public class AStar {
      * @param y coordinate of the Node becoming an obstacle
      * @param z coordinate of the Node becoming an obstacle
      */
-    private void setBlock(int x, int y, int z) {
-        this.searchArea[x][y][z].setBlock(true);
+    private void setObstacle(int x, int y, int z) {
+        this.searchArea[x][y][z].setObstacle(true);
     }
 
     /**
      * @param node input node
      * @return true of the node is an obstacle, false otherwise.
      */
-    public boolean isBlock(Node node) {
-        return this.searchArea[node.getX()][node.getY()][node.getZ()].isBlock();
+    public boolean isObstacle(Node node) {
+        return this.searchArea[node.getX()][node.getY()][node.getZ()].isObstacle();
     }
 
 

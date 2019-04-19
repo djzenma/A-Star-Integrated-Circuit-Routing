@@ -45,8 +45,8 @@ public class Maze {
 
         blocks = new ArrayList<>();
 
-        sourceNode.setBlock(false);
-        targetNode.setBlock(false);
+        sourceNode.setObstacle(false);
+        targetNode.setObstacle(false);
         this.aStar = new AStar(this.rows, this.cols, this.height, sourceNode, targetNode);
 
         this.src = sourceNode;
@@ -64,12 +64,12 @@ public class Maze {
      * @throws Exception in case the source is already occupied
      */
     public void setSource(int x, int y, int z) throws Exception {
-        if(this.aStar.isBlock(new Node(x,y,z)))
+        if(this.aStar.isObstacle(new Node(x,y,z)))
             throw new Exception("Source cell in a node that is already occupied!");
         else{
             this.maze[x][y][z] = SOURCE_CELL;
             this.src = new Node(x, y, z);
-            this.src.setBlock(false);
+            this.src.setObstacle(false);
             this.aStar.setInitialNode(this.src);
         }
     }
@@ -81,12 +81,12 @@ public class Maze {
      * @throws Exception in case the target is already occupied
      */
     public void setTarget(int x, int y, int z) throws Exception {
-        if(this.aStar.isBlock(new Node(x,y,z)))
+        if(this.aStar.isObstacle(new Node(x,y,z)))
             throw new Exception("Target cell in a node that is already occupied!");
         else {
             this.maze[x][y][z] = TARGET_CELL;
             this.target = new Node(x, y, z);
-            this.target.setBlock(false);
+            this.target.setObstacle(false);
             this.aStar.setFinalNode(this.target);
         }
     }
@@ -104,7 +104,7 @@ public class Maze {
      * @param blocksArray which is an array of the obstacles to be placed, each element in this array
      *                    is another array of size 3 which contains the x,y,z coordinates of the obstacle
      */
-    public void setBlocks(int[][] blocksArray) {
+    public void setObstacles(int[][] blocksArray) {
         this.blocks.addAll(Arrays.asList(blocksArray));
         this.aStar.setBlocks(convertListTo2dArray(this.blocks));
         //this.blocks = blocksArray;
