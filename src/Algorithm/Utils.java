@@ -26,7 +26,7 @@ public class Utils {
         System.out.print("Via_Cost: ");
         int via = reader.nextInt();
 
-        return new int[]{w, h, via};
+        return new int[]{h, w, via};
     }
 
     /**
