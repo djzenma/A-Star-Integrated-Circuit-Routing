@@ -1,5 +1,5 @@
 # Mazen Amr
-# Metal Layers wiring using A* Routing
+# Integrated Circuits (IC) Metal Layers wiring using A* Routing
 Project For the Course Digital Logic Design II in the American University in Cairo.
 
 ## A Star Algorithm for Routing cells' pins using Metal 1, Metal 2, and Metal 3 wires.
